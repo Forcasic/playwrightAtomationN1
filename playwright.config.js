@@ -7,13 +7,17 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: [['html', { open: 'never' }]],
-
+  workers: process.env.CI ? 10 : undefined,
+  reporter: [
+    ['html', { outputFolder: 'playwright-report' }],
+    ['allure-playwright'],
+  ],
   use: {
     headless: true,
     viewport: { width: 1280, height: 720 },
-    trace: 'on-first-retry'
+    trace: 'on',
+    screenshot: 'only-on-failure',
+    baseURL: 'https://the-internet.herokuapp.com/',
   },
 
   projects: [
